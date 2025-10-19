@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-File Image Gallery</title>
+    
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #ecf0f1;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        /* --- Filters/Categories --- */
+        .filters {
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            background-color: #bdc3c7;
+            color: var(--secondary-color);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .filter-btn:hover {
+            background-color: #95a5a6;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* --- Gallery Layout (Responsive Grid) --- */
+        .gallery-container {
+            display: grid;
+            /* Responsive Grid: changes column count based on screen size */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+        }
+
+        /* Hover Effect and Smooth Transition */
+        .gallery-item:hover {
+            transform: scale(1.05); /* Zoom effect */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px; /* Fixed height for uniformity */
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.3s; 
+        }
+
+        /* Smooth transition for filtering */
+        .gallery-item.hidden {
+            opacity: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            transition: opacity 0.5s, height 0.5s, margin 0.5s, padding 0.5s;
+        }
+        
+        .gallery-item:not(.hidden) {
+            transition: opacity 0.5s, height 0s, margin 0s, padding 0s;
+        }
+
+        /* --- Lightbox Styles --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .lightbox.visible {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #lightbox-img {
+            max-width: 100%;
+            max-height: 80vh; /* Viewport height */
+            display: block;
+            border-radius: 10px;
+            transition: transform 0.4s ease-out;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Navigation Buttons (Prev/Next) */
+        .nav-btn {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+        }
+
+        .prev {
+            left: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Responsive Image Gallery</h1>
+
+    <div class="filters">
+        <button data-category="all" class="filter-btn active">All</button>
+        <button data-category="nature" class="filter-btn">Nature</button>
+        <button data-category="city" class="filter-btn">City</button>
+        <button data-category="abstract" class="filter-btn">Abstract</button>
+    </div>
+
+    <div class="gallery-container">
+        </div>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="close-btn">&times;</span>
+        <div class="lightbox-content">
+            <button class="nav-btn prev" id="prev-btn">&#10094;</button>
+            <img id="lightbox-img" src="" alt="Enlarged view">
+            <button class="nav-btn next" id="next-btn">&#10095;</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample Image Data
+        const images = [
+            // Note: Using different IDs from picsum.photos for variety
+            { url: 'https://picsum.photos/id/1018/300/200', category: 'city', alt: 'City bridge at night' },
+            { url: 'https://picsum.photos/id/103/300/200', category: 'nature', alt: 'Forest path' },
+            { url: 'https://picsum.photos/id/1053/300/200', category: 'abstract', alt: 'Colorful paint swirls' },
+            { url: 'https://picsum.photos/id/1063/300/200', category: 'nature', alt: 'Mountain river' },
+            { url: 'https://picsum.photos/id/1043/300/200', category: 'city', alt: 'Skyscrapers in fog' },
+            { url: 'https://picsum.photos/id/1054/300/200', category: 'abstract', alt: 'Geometric pattern' },
+            { url: 'https://picsum.photos/id/1040/300/200', category: 'nature', alt: 'Desert sunset' },
+            { url: 'https://picsum.photos/id/1015/300/200', category: 'city', alt: 'London street view' },
+            { url: 'https://picsum.photos/id/1048/300/200', category: 'abstract', alt: 'Smoke and light' },
+        ];
+
+        const galleryContainer = document.querySelector('.gallery-container');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        let currentImageIndex = 0;
+        // filteredImages holds the image objects currently displayed (used for navigation)
+        let filteredImages = images.slice(); // Start with a copy of all images
+
+        // --- 1. Populate Gallery ---
+        function createGalleryItem(imgData, originalIndex) {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.setAttribute('data-category', imgData.category);
+            
+            const img = document.createElement('img');
+            img.src = imgData.url;
+            img.alt = imgData.alt;
+            // Store the original index for easy lookup
+            img.setAttribute('data-original-index', originalIndex); 
+            
+            // Initial click handler will be set up after all items are added
+            item.appendChild(img);
+            galleryContainer.appendChild(item);
+        }
+
+        // Create the initial gallery items
+        images.forEach((img, index) => createGalleryItem(img, index));
+        
+        // Initial setup of click handlers (needed because filterImages uses filteredImages)
+        filterImages('all'); 
+
+
+        // --- 2. Lightbox Functions ---
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightboxImage();
+            lightbox.classList.add('visible');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        window.closeLightbox = function(event) {
+            // Only close if the background or the close button is clicked
+            if (event.target === lightbox || event.target.classList.contains('close-btn')) {
+                lightbox.classList.remove('visible');
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }
+        }
+
+        function updateLightboxImage() {
+            const imgData = filteredImages[currentImageIndex];
+            if (imgData) {
+                // Use a larger size for the lightbox view
+                lightboxImg.src = imgData.url.replace('/300/200', '/800/600'); 
+                lightboxImg.alt = imgData.alt;
+            }
+        }
+
+        // --- 3. Navigation (Prev/Next) ---
+        function navigate(direction) {
+            // direction is +1 for next, -1 for prev
+            currentImageIndex += direction;
+
+            if (currentImageIndex < 0) {
+                currentImageIndex = filteredImages.length - 1; // Loop to last
+            } else if (currentImageIndex >= filteredImages.length) {
+                currentImageIndex = 0; // Loop to first
+            }
+
+            updateLightboxImage();
+        }
+
+        prevBtn.onclick = () => navigate(-1);
+        nextBtn.onclick = () => navigate(1);
+
+        // Keyboard navigation 
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('visible')) {
+                if (e.key === 'ArrowRight') {
+                    navigate(1);
+                } else if (e.key === 'ArrowLeft') {
+                    navigate(-1);
+                } else if (e.key === 'Escape') {
+                    closeLightbox({ target: lightbox });
+                }
+            }
+        });
+
+
+        // --- 4. Bonus: Image Filters ---
+        filterBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                filterImages(category);
+
+                // Update active class for styling
+                filterBtns.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+
+        function filterImages(category) {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            filteredImages = []; // Reset the list of navigatable images
+            
+            galleryItems.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                const imgElement = item.querySelector('img');
+                const originalIndex = parseInt(imgElement.getAttribute('data-original-index'));
+                const imgData = images[originalIndex];
+
+                // Check if item should be visible
+                const isVisible = (category === 'all' || itemCategory === category);
+                
+                if (isVisible) {
+                    item.classList.remove('hidden');
+                    
+                    // Add the image data to the list used for lightbox navigation
+                    filteredImages.push(imgData); 
+
+                    // Set the click handler to open the lightbox at the new index 
+                    // within the filteredImages array.
+                    const newIndex = filteredImages.length - 1;
+                    imgElement.onclick = () => openLightbox(newIndex);
+
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            // Reset currentImageIndex to 0 for the new filtered view
+            currentImageIndex = 0;
+        }
+    </script>
+</body>
+</html>

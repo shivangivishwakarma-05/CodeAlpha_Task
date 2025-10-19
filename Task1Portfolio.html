@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shivangi | Frontend Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6366f1', // Indigo 500 (Base Primary)
+                        'accent': '#ff6ec7', // Hot Pink (Vibrant Accent from Shivi's theme)
+                        'dark-bg': '#10172a', // Deep Blue/Slate Background
+                        'card-bg': '#1e293b', // Slate 800
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Global Styles for smooth UX */
+        html { scroll-behavior: smooth; }
+        body { background-color: #10172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+
+        /* Custom Scroll-Triggered Fade-In */
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .section-fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typing Cursor */
+        .typing-cursor {
+            border-right: 2px solid #ff6ec7; /* Accent color */
+            animation: blink 0.75s step-end infinite;
+            display: inline-block;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #ff6ec7; }
+        }
+
+        /* Skill Bar Animation */
+        .skill-fill-bar {
+            background: linear-gradient(90deg, #ff6ec7, #6366f1);
+            width: 0;
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 1.5s ease-out;
+        }
+
+        /* Hero text glow effect */
+        .name-glow {
+            animation: text-glow 2s infinite alternate;
+        }
+        @keyframes text-glow {
+            from { text-shadow: 0 0 5px #ff6ec7; }
+            to { text-shadow: 0 0 20px #ff6ec7; }
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-gray-50 antialiased">
+
+    <nav class="sticky top-0 z-50 bg-dark-bg/95 backdrop-blur-sm shadow-xl border-b border-accent/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="#home" class="flex-shrink-0 text-2xl font-extrabold text-accent tracking-wider transition-colors duration-300 name-glow">
+                    SHIVANGI.DEV
+                </a>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="#about" class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">About</a>
+                    <a href="#skills" class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Skills</a>
+                    <a href="#projects" class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Projects</a>
+                    <a href="#contact" class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="space-y-28 md:space-y-40">
+
+        <header id="home" class="pt-24 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-dark-bg to-accent/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center section-fade-in">
+                <p class="text-xl text-primary font-medium mb-3 tracking-widest uppercase">Building exceptional user interfaces</p>
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 text-gray-50">
+                    I'm <span class="text-accent name-glow">Shivangi</span>, a 
+                    <span id="typing-text" class="text-primary"></span>
+                    <span class="typing-cursor"></span>
+                </h1>
+                <p class="mt-6 text-xl text-gray-400 max-w-4xl mx-auto">
+                    A dedicated **Frontend Developer** specializing in cutting-edge **React ecosystems**, component libraries, and pixel-perfect, highly accessible user interfaces.
+                </p>
+                <a href="#projects" class="mt-10 inline-block px-10 py-4 border-2 border-accent text-lg font-bold rounded-full text-white bg-transparent hover:bg-accent/20 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-accent/30">
+                    View My UI Projects <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </header>
+
+        <section id="about" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 section-fade-in">
+            <h2 class="text-4xl font-bold text-center mb-12 border-b-4 border-accent/60 pb-2 inline-block text-gray-50">About Me 👩🏽‍💻</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="flex justify-center md:justify-start">
+                    <img src="https://placehold.co/400x400/1e293b/ff6ec7?text=Shivangi&font=inter" alt="Professional Photo of Shivangi" class="w-full max-w-sm rounded-xl shadow-2xl border-4 border-accent/50 object-cover aspect-square transition-all duration-500 hover:shadow-accent/50 hover:border-primary">
+                </div>
+                <div class="text-lg space-y-6 text-gray-300">
+                    <p>
+                        I'm a **Frontend specialist** committed to bridging design with code. My expertise is centered on building **performant, maintainable, and highly responsive** single-page applications (SPAs) and component systems.
+                    </p>
+                    <p>
+                        I focus intensely on **User Experience (UX)**, **Web Accessibility (WCAG)**, and optimizing site speed. My primary stack is **React/Next.js**, where I translate complex wireframes into intuitive digital products that look great and function seamlessly across all platforms.
+                    </p>
+                    <a href="#" class="inline-block px-6 py-3 border border-accent text-sm font-semibold rounded-full text-accent hover:bg-accent hover:text-dark-bg transition-colors duration-300 mt-4">
+                        Download Resume
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-card-bg/50 rounded-xl shadow-2xl shadow-accent/10 section-fade-in">
+            <h2 class="text-4xl font-bold text-center mb-12 border-b-4 border-accent/60 pb-2 inline-block text-gray-50">Frontend Stack & Expertise ⚙️</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                
+                <div class="p-6 bg-card-bg rounded-lg shadow-2xl text-center border border-primary/30 hover:shadow-accent/40 hover:scale-[1.03] transition-all duration-300">
+                    <i class="fab fa-react text-6xl text-sky-400 mb-4 block"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-50">React / Next.js</h3>
+                    <p class="text-gray-400 text-sm">Component development, Hooks, Context API, and SSR/SSG.</p>
+                </div>
+                <div class="p-6 bg-card-bg rounded-lg shadow-2xl text-center border border-primary/30 hover:shadow-accent/40 hover:scale-[1.03] transition-all duration-300">
+                    <i class="fab fa-js-square text-6xl text-yellow-400 mb-4 block"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-50">TypeScript/JS (ES6+)</h3>
+                    <p class="text-gray-400 text-sm">Strong typing, complex state logic, and modern JS features.</p>
+                </div>
+                <div class="p-6 bg-card-bg rounded-lg shadow-2xl text-center border border-primary/30 hover:shadow-accent/40 hover:scale-[1.03] transition-all duration-300">
+                    <i class="fas fa-palette text-6xl text-pink-500 mb-4 block"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-50">UI/UX & Figma</h3>
+                    <p class="text-gray-400 text-sm">Translating design into code, prototyping, and user flows.</p>
+                </div>
+                <div class="p-6 bg-card-bg rounded-lg shadow-2xl text-center border border-primary/30 hover:shadow-accent/40 hover:scale-[1.03] transition-all duration-300">
+                    <i class="fab fa-css3-alt text-6xl text-blue-400 mb-4 block"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-50">CSS / Tailwind / Sass</h3>
+                    <p class="text-gray-400 text-sm">Advanced styling, animations, and fluid responsive layouts.</p>
+                </div>
+                <div class="p-6 bg-card-bg rounded-lg shadow-2xl text-center border border-primary/30 hover:shadow-accent/40 hover:scale-[1.03] transition-all duration-300">
+                    <i class="fas fa-vial text-6xl text-green-500 mb-4 block"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-50">Testing (Jest/Enzyme)</h3>
+                    <p class="text-gray-400 text-sm">Unit testing and integration testing for robust components.</p>
+                </div>
+                <div class="p-6 bg-card-bg rounded-lg shadow-2xl text-center border border-primary/30 hover:shadow-accent/40 hover:scale-[1.03] transition-all duration-300">
+                    <i class="fas fa-braille text-6xl text-primary mb-4 block"></i>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-50">Redux/Zustand</h3>
+                    <p class="text-gray-400 text-sm">Centralized state management for complex applications.</p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto mt-16 space-y-4">
+                <h3 class="text-2xl font-semibold text-center text-primary mb-6">Core Competency Focus</h3>
+                
+                <div class="skill">
+                    <div class="flex justify-between mb-1"><span class="skill-name font-medium">React & Component Architecture</span><span class="text-gray-400">95%</span></div>
+                    <div class="h-2 w-full bg-card-bg rounded-full"><div class="skill-fill-bar" data-fill="95%"></div></div>
+                </div>
+                <div class="skill">
+                    <div class="flex justify-between mb-1"><span class="skill-name font-medium">Responsive Design & CSS/Tailwind</span><span class="text-gray-400">92%</span></div>
+                    <div class="h-2 w-full bg-card-bg rounded-full"><div class="skill-fill-bar" data-fill="92%"></div></div>
+                </div>
+                <div class="skill">
+                    <div class="flex justify-between mb-1"><span class="skill-name font-medium">Performance Optimization & Accessibility (A11y)</span><span class="text-gray-400">88%</span></div>
+                    <div class="h-2 w-full bg-card-bg rounded-full"><div class="skill-fill-bar" data-fill="88%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 section-fade-in">
+            <h2 class="text-4xl font-bold text-center mb-12 border-b-4 border-accent/60 pb-2 inline-block text-gray-50">Featured Frontend Projects 🚀</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+                <div class="bg-card-bg p-6 rounded-xl shadow-2xl border border-primary/30 group transition-all duration-300 hover:shadow-accent/40 hover:scale-[1.02]">
+                    <h3 class="text-2xl font-bold text-accent mb-3">React Commerce UI Kit</h3>
+                    <p class="text-gray-300 mb-4">A high-performance, responsive e-commerce storefront with complex state management for product filtering and cart logic.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-sky-600 border border-sky-500">React</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-purple-600 border border-purple-500">Redux Toolkit</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-blue-600 border border-blue-500">Tailwind</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary hover:text-accent font-medium flex items-center transition-colors duration-300">Live Demo <i class="fas fa-external-link-alt w-3 h-3 ml-1"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gray-200 font-medium transition-colors duration-300">GitHub Repo</a>
+                    </div>
+                </div>
+
+                <div class="bg-card-bg p-6 rounded-xl shadow-2xl border border-primary/30 group transition-all duration-300 hover:shadow-accent/40 hover:scale-[1.02]">
+                    <h3 class="text-2xl font-bold text-accent mb-3">Accessible Analytics Dashboard</h3>
+                    <p class="text-gray-300 mb-4">A visualization platform focused on high accessibility standards (A11y) and custom, interactive SVG charting components.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-pink-600 border border-pink-500">React</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-green-700 border border-green-600">A11y & ARIA</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-yellow-600 border border-yellow-500">D3.js / SVG</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary hover:text-accent font-medium flex items-center transition-colors duration-300">Live Demo <i class="fas fa-external-link-alt w-3 h-3 ml-1"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gray-200 font-medium transition-colors duration-300">GitHub Repo</a>
+                    </div>
+                </div>
+
+                <div class="bg-card-bg p-6 rounded-xl shadow-2xl border border-primary/30 group transition-all duration-300 hover:shadow-accent/40 hover:scale-[1.02]">
+                    <h3 class="text-2xl font-bold text-accent mb-3">Custom Design System Package</h3>
+                    <p class="text-gray-300 mb-4">A published component library package (NPM) built with Storybook for documentation and comprehensive test coverage.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-indigo-600 border border-indigo-500">Storybook</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-sky-600 border border-sky-500">TypeScript</span>
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-orange-600 border border-orange-500">NPM Package</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary hover:text-accent font-medium flex items-center transition-colors duration-300">Live Demo <i class="fas fa-external-link-alt w-3 h-3 ml-1"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gray-200 font-medium transition-colors duration-300">GitHub Repo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center section-fade-in">
+            <h2 class="text-4xl font-bold mb-6 border-b-4 border-accent/60 pb-2 inline-block text-gray-50">Let's Connect! 📧</h2>
+            <p class="text-lg text-gray-300 mb-8">
+                I'm currently open for a new role as a **Senior Frontend Engineer** or **UI Developer**. Reach out to discuss your project or team!
+            </p>
+            
+            <a href="mailto:shivangi.dev@example.com" class="inline-block px-8 py-4 border-2 border-accent text-xl font-bold rounded-full shadow-lg text-accent bg-transparent hover:bg-accent/10 transition-all duration-300 hover:scale-105">
+                shivangi.dev@example.com
+            </a>
+
+            <form class="mt-12 space-y-4 text-left p-6 bg-card-bg rounded-xl shadow-xl border border-accent/20">
+                <input type="text" placeholder="Your Name" required class="w-full p-3 bg-dark-bg border border-card-bg focus:border-primary focus:ring focus:ring-primary/50 rounded-lg text-white outline-none transition-colors">
+                <input type="email" placeholder="Your Professional Email" required class="w-full p-3 bg-dark-bg border border-card-bg focus:border-primary focus:ring focus:ring-primary/50 rounded-lg text-white outline-none transition-colors">
+                <textarea rows="5" placeholder="Your Message" class="w-full p-3 bg-dark-bg border border-card-bg focus:border-primary focus:ring focus:ring-primary/50 rounded-lg text-white outline-none transition-colors"></textarea>
+                <button type="submit" class="w-full px-8 py-3 text-lg font-bold rounded-lg text-dark-bg bg-accent hover:bg-accent/80 transition-all duration-300 transform hover:scale-[1.01] shadow-md shadow-accent/40">
+                    Send Message <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+            </form>
+
+            <div class="flex justify-center space-x-6 mt-8">
+                <a href="#" target="_blank" class="text-gray-400 hover:text-accent transition-all duration-300 transform hover:scale-110"><i class="fab fa-linkedin text-3xl"></i></a>
+                <a href="#" target="_blank" class="text-gray-400 hover:text-accent transition-all duration-300 transform hover:scale-110"><i class="fab fa-github text-3xl"></i></a>
+                <a href="#" target="_blank" class="text-gray-400 hover:text-accent transition-all duration-300 transform hover:scale-110"><i class="fab fa-twitter text-3xl"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-20 py-8 border-t border-accent/20 bg-dark-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2025 SHIVANGI Dev. All rights reserved. | Crafted for the web using React & Tailwind.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Typing Effect Logic ---
+            const typingTextElement = document.getElementById('typing-text');
+            // Titles specialized for Frontend
+            const jobTitles = ["Frontend Engineer", "React Specialist", "UI/UX Developer", "Design System Builder"];
+            let jobTitleIndex = 0;
+            let charIndex = 0;
+            const typingSpeed = 100;
+            const deletingSpeed = 50;
+            const pauseTime = 1800;
+
+            function typeWriter() {
+                const currentTitle = jobTitles[jobTitleIndex];
+                if (charIndex < currentTitle.length) {
+                    typingTextElement.textContent += currentTitle.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, typingSpeed);
+                } else if (charIndex === currentTitle.length) {
+                    setTimeout(deleteText, pauseTime);
+                }
+            }
+
+            function deleteText() {
+                const currentTitle = jobTitles[jobTitleIndex];
+                if (charIndex > 0) {
+                    typingTextElement.textContent = currentTitle.substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(deleteText, deletingSpeed);
+                } else {
+                    jobTitleIndex = (jobTitleIndex + 1) % jobTitles.length;
+                    setTimeout(typeWriter, typingSpeed + 200);
+                }
+            }
+            typeWriter();
+
+
+            // --- 2. Section Fade-In on Scroll (Intersection Observer) ---
+            const faders = document.querySelectorAll('.section-fade-in');
+            const appearOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => { appearOnScroll.observe(fader); });
+            
+            // --- 3. Skill Bar Animation on Scroll ---
+            const skillFills = document.querySelectorAll('.skill-fill-bar');
+            
+            const skillOptions = { threshold: 0.7 };
+            
+            const skillObserver = new IntersectionObserver(function(entries, skillObserver) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.width = entry.target.dataset.fill;
+                        skillObserver.unobserve(entry.target);
+                    }
+                });
+            }, skillOptions);
+
+            skillFills.forEach(fill => { skillObserver.observe(fill); });
+            
+            // --- 4. Smooth Scroll for Navigation ---
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

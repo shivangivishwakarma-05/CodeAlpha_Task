@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Cyberpunk Calculator</title>
+    <!-- Load Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a monospace font for a digital feel */
+        .digital-font {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        /* --- ANIMATIONS AND CORE STYLING --- */
+        
+        /* Keyframes for the pulsing border effect */
+        @keyframes pulse-border {
+            0% { border-color: #00FFFF; box-shadow: 0 0 10px #00FFFF, 10px 10px 0 #333, 15px 15px 0 #555; }
+            100% { border-color: #FF00FF; box-shadow: 0 0 20px #FF00FF, 10px 10px 0 #333, 15px 15px 0 #555; }
+        }
+
+        /* Custom styles for the calculator interface */
+        .calculator-body {
+            /* Heavy, sharp shadow for a rugged look */
+            border: 3px solid #00FFFF; /* Initial Neon Cyan border */
+            /* Apply the pulsing animation */
+            animation: pulse-border 2s infinite alternate;
+        }
+        
+        /* Custom button styling for a digital, high-contrast look */
+        .calc-button {
+            transition: all 0.1s;
+            /* Keep the 3D click effect: shadow, then sink */
+            @apply p-4 text-2xl font-bold border-2 border-current shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1;
+        }
+
+        /* Inset glow and TEXT shadow for the display screen (CRT Effect) */
+        #current-operand {
+            /* Deeper inset shadow for green light source */
+            box-shadow: inset 0 0 15px #00FF00, inset 0 0 8px #00FF00;
+            /* Text glow for true neon look */
+            text-shadow: 0 0 5px #00FF00, 0 0 15px #00FF00;
+        }
+
+        /* Unique styling for the Equals button */
+        .calc-button-equal {
+             /* Add external shadow (glow) to the equal button */
+             box-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 4px 4px 0 0 rgba(0,0,0,1); 
+        }
+    </style>
+    <!-- Configure Tailwind for Inter font and new Cyberpunk colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Cyberpunk Color Palette
+                        'cp-main': '#111827',     /* Dark background */
+                        'cp-input': '#1f2937',    /* Input background */
+                        'cp-num': '#ECF0F1',      /* White/Silver text */
+                        'cp-op': '#00FFFF',       /* Neon Cyan for standard operators */
+                        'cp-equal': '#FF00FF',    /* Neon Pink/Magenta for Equals */
+                        'cp-clear': '#00FF00',    /* Neon Green for Clear/Delete */
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cp-main flex items-center justify-center min-h-screen font-sans p-4">
+
+    <div id="calculator" class="calculator-body w-full max-w-sm bg-cp-input p-5 rounded-none">
+        
+        <h1 class="text-cp-op text-center text-xl font-bold mb-4 digital-font">:: CALC / UNIT 88 ::</h1>
+
+        <!-- Display Screen -->
+        <div class="mb-5 border-2 border-cp-clear p-1">
+            <input
+                id="current-operand"
+                type="text"
+                readonly
+                class="w-full text-right bg-cp-input text-cp-clear text-5xl font-bold p-3 border-none focus:outline-none h-16 digital-font tracking-widest rounded-none"
+                value="0"
+            >
+        </div>
+
+        <!-- Buttons Grid -->
+        <div class="grid grid-cols-4 gap-3">
+            <!-- First Row -->
+            <button class="calc-button bg-cp-clear text-cp-main col-span-2 border-cp-clear" onclick="clearDisplay()">AC</button>
+            <button class="calc-button bg-cp-clear text-cp-main border-cp-clear" onclick="deleteLast()">DEL</button>
+            <button class="calc-button bg-cp-op text-cp-input border-cp-op" data-operator="÷" onclick="appendInput('÷')">÷</button>
+
+            <!-- Second Row -->
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('7')">7</button>
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('8')">8</button>
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('9')">9</button>
+            <button class="calc-button bg-cp-op text-cp-input border-cp-op" data-operator="×" onclick="appendInput('×')">×</button>
+
+            <!-- Third Row -->
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('4')">4</button>
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('5')">5</button>
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('6')">6</button>
+            <button class="calc-button bg-cp-op text-cp-input border-cp-op" data-operator="−" onclick="appendInput('−')">−</button>
+
+            <!-- Fourth Row -->
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('1')">1</button>
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('2')">2</button>
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('3')">3</button>
+            <button class="calc-button bg-cp-op text-cp-input border-cp-op" data-operator="+" onclick="appendInput('+')">+</button>
+
+            <!-- Fifth Row -->
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op col-span-2" onclick="appendInput('0')">0</button>
+            <button class="calc-button bg-cp-input text-cp-num border-cp-op" onclick="appendInput('.')">.</button>
+            <button class="calc-button calc-button-equal bg-cp-equal text-cp-main border-cp-equal" onclick="calculateResult()">=</button>
+        </div>
+
+    </div>
+
+    <script>
+        const display = document.getElementById('current-operand');
+        let currentInput = '0';
+        let isResultDisplayed = false;
+
+        /**
+         * Safely replaces common arithmetic symbols with JavaScript equivalents.
+         * @param {string} input - The raw input string.
+         * @returns {string} The formatted string for calculation.
+         */
+        function formatForCalculation(input) {
+            return input
+                .replace(/×/g, '*')
+                .replace(/÷/g, '/')
+                .replace(/−/g, '-');
+        }
+
+        /**
+         * Updates the display input field.
+         */
+        function updateDisplay() {
+            // Limit display length to prevent overflow
+            display.value = currentInput.length > 15 ? currentInput.substring(0, 15) + '...' : currentInput;
+        }
+
+        /**
+         * Handles appending numbers or operators to the input string.
+         * @param {string} value - The number, operator, or decimal point.
+         */
+        function appendInput(value) {
+            // If a result was just calculated, clear the display if a number is pressed
+            if (isResultDisplayed && !isNaN(parseFloat(value))) {
+                currentInput = '0';
+                isResultDisplayed = false;
+            } else if (isResultDisplayed && (value === '+' || value === '−' || value === '×' || value === '÷')) {
+                // If an operator is pressed after a result, use the result as the start of the new calculation
+                isResultDisplayed = false;
+            } else if (isResultDisplayed) {
+                // If = or an unhandled button was pressed, reset for new input
+                currentInput = '0';
+                isResultDisplayed = false;
+            }
+
+            // Handle initial '0'
+            if (currentInput === '0' && value !== '.') {
+                if (value === '+' || value === '−' || value === '×' || value === '÷') {
+                    // Prepend zero if starting with an operator
+                    currentInput += value;
+                } else {
+                    currentInput = value;
+                }
+            } else {
+                const lastChar = currentInput.slice(-1);
+
+                // Prevent multiple consecutive operators
+                const isOperator = (c) => c === '+' || c === '−' || c === '×' || c === '÷';
+                if (isOperator(lastChar) && isOperator(value)) {
+                    // Replace the last operator with the new one
+                    currentInput = currentInput.slice(0, -1) + value;
+                } else if (value === '.') {
+                    // Prevent multiple decimal points in the last number segment
+                    const parts = currentInput.split(/[+−×÷]/);
+                    const lastPart = parts[parts.length - 1];
+
+                    if (!lastPart.includes('.')) {
+                        // Ensure it's not a leading decimal without a zero
+                        if (currentInput === '0') {
+                             currentInput = '0.';
+                        } else {
+                            currentInput += value;
+                        }
+                    }
+                } else {
+                    currentInput += value;
+                }
+            }
+
+            updateDisplay();
+        }
+
+        /**
+         * Clears all input and resets the display.
+         */
+        function clearDisplay() {
+            currentInput = '0';
+            isResultDisplayed = false;
+            updateDisplay();
+        }
+
+        /**
+         * Deletes the last character from the input string.
+         */
+        function deleteLast() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            isResultDisplayed = false;
+            updateDisplay();
+        }
+
+        /**
+         * Calculates the final result of the expression.
+         */
+        function calculateResult() {
+            try {
+                // 1. Prepare expression for JavaScript's eval
+                let expressionToCalculate = formatForCalculation(currentInput);
+
+                // 2. Simple cleanup: remove trailing operators before calculation
+                while ('+-*/'.includes(expressionToCalculate.slice(-1))) {
+                    expressionToCalculate = expressionToCalculate.slice(0, -1);
+                }
+
+                // 3. Perform calculation using the Function constructor method (slightly safer than direct eval)
+                // Note: For a true production environment, a dedicated expression parser would be required.
+                const result = new Function('return ' + expressionToCalculate)();
+
+                // 4. Format and display the result
+                if (isFinite(result)) {
+                    // Limit the result to a reasonable number of decimal places
+                    const formattedResult = parseFloat(result.toFixed(10));
+                    currentInput = formattedResult.toString();
+                    isResultDisplayed = true;
+                } else {
+                    currentInput = 'Error';
+                    isResultDisplayed = true;
+                }
+
+            } catch (e) {
+                currentInput = 'Error';
+                isResultDisplayed = true;
+            }
+            updateDisplay();
+        }
+
+        /**
+         * BONUS: Adds keyboard support.
+         */
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+
+            if (key >= '0' && key <= '9' || key === '.') {
+                appendInput(key);
+            } else if (key === '+') {
+                appendInput('+');
+            } else if (key === '-') {
+                appendInput('−'); // Use custom minus sign
+            } else if (key === '*' || key === 'x') {
+                appendInput('×'); // Use custom multiplication sign
+            } else if (key === '/') {
+                event.preventDefault(); // Prevent browser shortcut
+                appendInput('÷'); // Use custom division sign
+            } else if (key === 'Enter' || key === '=') {
+                event.preventDefault();
+                calculateResult();
+            } else if (key === 'Backspace') {
+                deleteLast();
+            } else if (key === 'Delete' || key === 'c' || key === 'C') {
+                clearDisplay();
+            }
+        });
+
+        // Initialize display on load
+        updateDisplay();
+    </script>
+
+</body>
+</html>
