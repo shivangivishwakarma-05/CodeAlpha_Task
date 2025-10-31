@@ -4,7 +4,7 @@ My Internship Tasks.
 
 This document provides a consolidated technical overview of three single-file web applications: the Frontend Developer Portfolio, a Dynamic Image Gallery, and the Cyberpunk Calculator.
 
-💻 Task 1: Shivangi | Frontend Developer Portfolio
+                                                                             💻 Task 1: Shivangi | Frontend Developer Portfolio
 
 This is a single-page application (SPA) portfolio designed to be a concise and visually striking showcase of core competencies and featured projects, built using a single HTML file with Tailwind CSS and custom JavaScript.
 
@@ -78,7 +78,7 @@ Navigation Bar
 
 Sticky navbar (sticky top-0) with a translucent, blurred background (backdrop-blur-sm).
 
-🖼️ Task 2: Dynamic Responsive Image Gallery
+                                                                              🖼️ Task 2: Dynamic Responsive Image Gallery
 
 This project is a modern, single-file image gallery application built for high responsiveness and enhanced user experience through interactive features.
 
@@ -116,7 +116,7 @@ Modal Controls
 
 Supports swiping (on touch devices) or arrow key presses (on desktop) to navigate between images while in the modal view.
 
-👾 Task 3: Dynamic Cyberpunk Calculator
+                                                                              👾 Task 3: Dynamic Cyberpunk Calculator
 
 This application is a functional JavaScript calculator engine designed with a unique, high-contrast, neon-themed user interface, built using Tailwind CSS and custom CSS animations.
 
